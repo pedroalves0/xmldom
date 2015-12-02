@@ -202,7 +202,11 @@ function parseElementStartPart(source,start,el,entityReplacer,errorHandler){
 		case '"':
 			if(s === S_EQ){//equal
 				start = p+1;
-				p = source.indexOf(c,start)
+				var lastQuote = start;
+				do {
+					p = source.indexOf('"', lastQuote);
+					lastQuote = p+1;
+				} while(source.charAt(p) === '"' && source.charAt(p-1) === '\\');
 				if(p>0){
 					value = source.slice(start,p).replace(/&#?\w+;/g,entityReplacer);
 					el.add(attrName,value,start-1);
